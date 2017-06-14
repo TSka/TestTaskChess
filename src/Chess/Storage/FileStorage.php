@@ -3,6 +3,7 @@
 namespace Chess\Storage;
 
 use Chess\Exceptions\Exception;
+use Chess\Exceptions\StorageException;
 
 class FileStorage implements StorageInterface
 {
@@ -15,8 +16,8 @@ class FileStorage implements StorageInterface
 
     public function get($key)
     {
-        if (!file_exists($this->path($key))) {
-            throw new Exception('Save state is not exist');
+        if (!$this->has($key)) {
+            throw new StorageException("Save state does not exist");
         }
 
         return file_get_contents($this->path($key));

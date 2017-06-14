@@ -15,6 +15,10 @@ class RedisStorage implements StorageInterface
 
     public function get($key)
     {
+        if (!$this->has($key)) {
+            throw new StorageException("Save state does not exist");
+        }
+
         return $this->client->get($key);
     }
 

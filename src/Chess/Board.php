@@ -3,12 +3,20 @@
 namespace Chess;
 
 use Chess\Exceptions\Exception;
+use Chess\Exceptions\StorageException;
 use Chess\Pieces\Piece;
 use Chess\Storage\StorageInterface;
 
 class Board
 {
     private $squares = [];
+
+    private $storage;
+
+    public function __construct(StorageInterface $storage)
+    {
+        $this->storage = $storage;
+    }
 
     public function addPiece(Piece $piece, $x, $y)
     {
@@ -42,17 +50,13 @@ class Board
         unset($this->squares[$x][$y]);
     }
 
-    public function save(StorageInterface $storage, $key = 'board')
+    public function save($key = 'board')
     {
-        $storage->put($key, serialize($this->squares));
+        $this->storage->put($key, serialize($this->squares));
     }
 
-    public function load(StorageInterface $storage, $key = 'board')
+    public function load($key = 'board')
     {
-        if (!$storage->has($key)) {
-            throw new Exception("Save state does not exist");
-        }
-
-        $this->squares = unserialize($storage->get($key));
+        $this->squares = unserialize($this->storage->get($key));
     }
 }
