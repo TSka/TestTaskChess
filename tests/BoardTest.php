@@ -54,12 +54,12 @@ class BoardTest extends TestCase
         $board->addPiece($pawn, 'e', 2);
     }
 
-    public function testStorage()
+    public function testSaveLoad()
     {
         $saveKey = md5(rand(0, 100));
         $storage = new DummyStorage();
-        $board1 = new Board($storage, new EventManager());
-        $board2 = new Board($storage, new EventManager());
+        $board1 = new Board($storage, $this->events);
+        $board2 = new Board($storage, $this->events);
         $pawn1 = new Pawn('white');
 
         $board1->addPiece($pawn1, 'e', 2);
@@ -69,7 +69,20 @@ class BoardTest extends TestCase
         $loadStatus = $board2->load($saveKey);
         $this->assertTrue($loadStatus, 'Loading error');
         $pawn2 = $board2->getPiece('e', 2);
-        $this->assertEquals($pawn1, $pawn2);
+        $this->assertEquals($pawn1, $pawn2, 'Wrong Piece getted');
+    }
+
+    public function testAddMoveRemovePiece()
+    {
+        $pawn = new Pawn('white');
+        $board = new Board($this->storage, $this->events);
+
+        $board->addPiece($pawn, 'e', 2);
+        $this->assertEquals($board->getPiece('e', 2), $pawn, 'Piece not added');
+        $board->movePiece('e', 2,'e', 4);
+        $this->assertEquals($board->getPiece('e', 4), $pawn, 'Piece not moved');
+        $board->removePiece('e', 4);
+        $this->assertEquals($board->getPiece('e', 4), null, 'Piece not deleted');
     }
 }
 
@@ -90,6 +103,11 @@ class DummyStorage implements StorageInterface
     public function has($key)
     {
         return isset($this->data[$key]);
+    }
+
+    public function remove($key)
+    {
+        unset($this->data[$key]);
     }
 
 }

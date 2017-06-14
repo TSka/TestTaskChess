@@ -24,7 +24,7 @@ class RedisStorage implements StorageInterface
 
     public function put($key, $data)
     {
-        return $this->client->set($key, serialize($data));
+        return (string) $this->client->set($key, serialize($data)) === 'OK';
     }
 
     public function has($key)
@@ -34,6 +34,6 @@ class RedisStorage implements StorageInterface
 
     public function remove($key)
     {
-        return $this->client->del($key);
+        return (bool) $this->client->del($key);
     }
 }
