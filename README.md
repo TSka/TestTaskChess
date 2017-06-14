@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TSka/TestTaskChess.svg?branch=master)](https://travis-ci.org/TSka/TestTaskChess)
+
 # Test Task Chess
 
 ```php
