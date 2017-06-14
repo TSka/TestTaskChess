@@ -17,12 +17,27 @@ class Board
 
     private $events;
 
+    /**
+     * Board constructor.
+     *
+     * @param StorageInterface $storage
+     * @param ManagerInterface $events
+     */
     public function __construct(StorageInterface $storage, ManagerInterface $events)
     {
         $this->storage = $storage;
         $this->events = $events;
     }
 
+    /**
+     * Add piece on board
+     *
+     * @param Piece $piece
+     * @param       $x
+     * @param       $y
+     *
+     * @throws Exception
+     */
     public function addPiece(Piece $piece, $x, $y)
     {
         if (!empty($this->squares[$x][$y])) {
@@ -34,6 +49,16 @@ class Board
         $this->squares[$x][$y] = $piece;
     }
 
+    /**
+     * Move piece
+     *
+     * @param $fromX
+     * @param $fromY
+     * @param $toX
+     * @param $toY
+     *
+     * @throws Exception
+     */
     public function movePiece($fromX, $fromY, $toX, $toY)
     {
         if (empty($this->squares[$fromX][$fromY])) {
@@ -48,6 +73,13 @@ class Board
         unset($this->squares[$fromX][$fromY]);
     }
 
+    /**
+     * Remove piece from a board
+     * @param $x
+     * @param $y
+     *
+     * @throws Exception
+     */
     public function removePiece($x, $y)
     {
         if (empty($this->squares[$x][$y])) {
@@ -57,11 +89,21 @@ class Board
         unset($this->squares[$x][$y]);
     }
 
+    /**
+     * Save bboard state
+     *
+     * @param string $key
+     */
     public function save($key = 'board')
     {
         $this->storage->put($key, serialize($this->squares));
     }
 
+    /**
+     * Load board state
+     *
+     * @param string $key
+     */
     public function load($key = 'board')
     {
         $this->squares = unserialize($this->storage->get($key));

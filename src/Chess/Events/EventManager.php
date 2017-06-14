@@ -6,11 +6,23 @@ class EventManager implements ManagerInterface
 {
     private $listeners;
 
+    /**
+     * Subscribe manager
+     *
+     * @param $eventType
+     * @param $listener
+     */
     public function subscribe($eventType, $listener)
     {
         $this->listeners[$eventType][$listener];
     }
 
+    /**
+     * Unsubscribe manager
+     *
+     * @param $eventType
+     * @param $listener
+     */
     public function unsubscribe($eventType, $listener)
     {
         foreach ($this->listeners[$eventType] as $key => $value) {
@@ -20,6 +32,12 @@ class EventManager implements ManagerInterface
         }
     }
 
+    /**
+     * Notify
+     *
+     * @param $eventType
+     * @param $data
+     */
     public function notify($eventType, $data)
     {
         foreach ($this->listeners[$eventType] as $listener) {
