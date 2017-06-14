@@ -4,6 +4,7 @@ namespace Chess;
 
 use Chess\Events\ManagerInterface;
 use Chess\Exceptions\Exception;
+use Chess\Exceptions\StorageException;
 use Chess\Pieces\Piece;
 use Chess\Storage\StorageInterface;
 
@@ -90,23 +91,49 @@ class Board
     }
 
     /**
+     * Get Piece from a board
+     *
+     * @param $x
+     * @param $y
+     * @return Piece|null
+     */
+    public function getPiece($x, $y)
+    {
+        return isset($this->squares[$x][$y]) ? $this->squares[$x][$y] : null;
+    }
+
+    /**
      * Save bboard state
      *
      * @param string $key
+     * @return bool
      */
     public function save($key = 'board')
     {
-        $this->storage->put($key, serialize($this->squares));
+        try {
+            $this->storage->put($key, serialize($this->squares));
+            return true;
+        }
+        catch (StorageException $e) {
+            return false;
+        }
     }
 
     /**
      * Load board state
      *
      * @param string $key
+     * @return bool
      */
     public function load($key = 'board')
     {
-        $this->squares = unserialize($this->storage->get($key));
+        try {
+            $this->squares = unserialize($this->storage->get($key));
+            return true;
+        }
+        catch (StorageException $e) {
+            return false;
+        }
     }
 
     /**

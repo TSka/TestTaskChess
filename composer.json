@@ -14,5 +14,8 @@
         "psr-4": {
             "Chess\\": "src/Chess"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2"
     }
 }

@@ -24,7 +24,7 @@ interface StorageInterface
      * Check if exist data for the giving key
      *
      * @param $key
-     * @return bool
+     * @return mixed
      */
     public function has($key);
 }
