@@ -2,20 +2,25 @@
 
 namespace Chess;
 
+use Chess\Events\ManagerInterface;
 use Chess\Exceptions\Exception;
-use Chess\Exceptions\StorageException;
 use Chess\Pieces\Piece;
 use Chess\Storage\StorageInterface;
 
 class Board
 {
+    const EVENT_ADD_PIECE = 'add_piece';
+
     private $squares = [];
 
     private $storage;
 
-    public function __construct(StorageInterface $storage)
+    private $events;
+
+    public function __construct(StorageInterface $storage, ManagerInterface $events)
     {
         $this->storage = $storage;
+        $this->events = $events;
     }
 
     public function addPiece(Piece $piece, $x, $y)
@@ -23,6 +28,8 @@ class Board
         if (!empty($this->squares[$x][$y])) {
             throw new Exception("Square is already occupied");
         }
+
+        $this->events->notify(self::EVENT_ADD_PIECE, $piece);
 
         $this->squares[$x][$y] = $piece;
     }
@@ -58,5 +65,13 @@ class Board
     public function load($key = 'board')
     {
         $this->squares = unserialize($this->storage->get($key));
+    }
+
+    /**
+     * @return ManagerInterface
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 }

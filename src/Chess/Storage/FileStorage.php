@@ -2,7 +2,6 @@
 
 namespace Chess\Storage;
 
-use Chess\Exceptions\Exception;
 use Chess\Exceptions\StorageException;
 
 class FileStorage implements StorageInterface
