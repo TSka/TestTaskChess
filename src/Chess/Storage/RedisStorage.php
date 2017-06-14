@@ -2,16 +2,29 @@
 
 namespace Chess\Storage;
 
+use Predis\Client as RedisClient;
+
 class RedisStorage implements StorageInterface
 {
+    private $client;
 
-    public function save($key, $data)
+    public function __construct($parameters = [])
     {
-        // TODO: Implement save() method.
+        $this->client = new RedisClient($parameters);
     }
 
-    public function load($key)
+    public function get($key)
     {
-        // TODO: Implement load() method.
+        return $this->client->get($key);
+    }
+
+    public function put($key, $data)
+    {
+        return $this->client->set($key, $data);
+    }
+
+    public function has($key)
+    {
+        return $this->client->exists($key);
     }
 }

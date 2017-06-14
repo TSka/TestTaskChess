@@ -44,11 +44,15 @@ class Board
 
     public function save(StorageInterface $storage, $key = 'board')
     {
-        $storage->save($key, serialize($this->squares));
+        $storage->put($key, serialize($this->squares));
     }
 
     public function load(StorageInterface $storage, $key = 'board')
     {
-        $this->squares = unserialize($storage->load($key));
+        if (!$storage->has($key)) {
+            throw new Exception("Save state does not exist");
+        }
+
+        $this->squares = unserialize($storage->get($key));
     }
 }

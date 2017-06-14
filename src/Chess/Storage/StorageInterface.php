@@ -4,7 +4,27 @@ namespace Chess\Storage;
 
 interface StorageInterface
 {
-    public function save($key, $data);
+    /**
+     * Get data for the giving key
+     *
+     * @param $key
+     * @return mixed
+     */
+    public function get($key);
 
-    public function load($key);
+    /**
+     * Put data
+     *
+     * @param $key
+     * @param $data
+     */
+    public function put($key, $data);
+
+    /**
+     * Check if exist data for the giving key
+     *
+     * @param $key
+     * @return bool
+     */
+    public function has($key);
 }
