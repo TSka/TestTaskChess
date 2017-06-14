@@ -27,4 +27,12 @@ interface StorageInterface
      * @return mixed
      */
     public function has($key);
+
+    /**
+     * Remove data
+     *
+     * @param $key
+     * @return mixed
+     */
+    public function remove($key);
 }

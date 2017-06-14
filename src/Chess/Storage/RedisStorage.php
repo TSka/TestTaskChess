@@ -31,4 +31,9 @@ class RedisStorage implements StorageInterface
     {
         return $this->client->exists($key);
     }
+
+    public function remove($key)
+    {
+        return $this->client->del($key);
+    }
 }

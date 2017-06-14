@@ -24,12 +24,17 @@ class FileStorage implements StorageInterface
 
     public function put($key, $data)
     {
-        file_put_contents($this->path($key), serialize($data));
+        return file_put_contents($this->path($key), serialize($data)) !== false ? true : false;
     }
 
     public function has($key)
     {
         return is_file($this->path($key));
+    }
+
+    public function remove($key)
+    {
+        return unlink($this->path($key));
     }
 
 
