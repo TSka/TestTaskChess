@@ -14,7 +14,7 @@ class EventManager implements ManagerInterface
      */
     public function subscribe($eventType, $listener)
     {
-        $this->listeners[$eventType][$listener];
+        $this->listeners[$eventType][] = $listener;
     }
 
     /**
