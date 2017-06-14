@@ -19,12 +19,12 @@ class FileStorage implements StorageInterface
             throw new StorageException("Save state does not exist");
         }
 
-        return file_get_contents($this->path($key));
+        return unserialize(file_get_contents($this->path($key)));
     }
 
     public function put($key, $data)
     {
-        file_put_contents($this->path($key), $data);
+        file_put_contents($this->path($key), serialize($data));
     }
 
     public function has($key)

@@ -111,7 +111,7 @@ class Board
     public function save($key = 'board')
     {
         try {
-            $this->storage->put($key, serialize($this->squares));
+            $this->storage->put($key, $this->squares);
             return true;
         }
         catch (StorageException $e) {
@@ -128,7 +128,7 @@ class Board
     public function load($key = 'board')
     {
         try {
-            $this->squares = unserialize($this->storage->get($key));
+            $this->squares = $this->storage->get($key);
             return true;
         }
         catch (StorageException $e) {
